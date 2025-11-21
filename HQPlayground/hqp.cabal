@@ -25,7 +25,7 @@ common common-options
 
 library core
     import:   warnings, common-options
-    exposed-modules: QubitOperators, MatrixSemantics, PrettyOp, PrettyMatrix, HQP
+    exposed-modules: QubitOperators, MatrixSemantics, PrettyOp, PrettyMatrix
     build-depends:  
         base,
         hmatrix,
