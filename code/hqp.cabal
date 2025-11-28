@@ -59,11 +59,6 @@ executable NoCloning
   import: exe-common
   main-is: NoCloning.hs
 
-
-executable ProgramInversion
-  import: exe-common
-  main-is: ProgramInversion.hs
-
 executable YesTeleportation
   import: exe-common
   build-depends:
