@@ -9,8 +9,10 @@ import PrettyMatrix
 
 1. write the function cx_cloned_state, which takes a 1Q-state |psi> and produces the 2Q-state CX|psi,0>
 
-2. Inspect the result for |0>, |1>, H|0> = sqrt(1/2)*(|0> + |1>). 
-3. Inspect the result for |psi> = sqrt(1/3)|0> + sqrt(2/3)|1>
+2. Inspect the result for |0>, |1>, H|0> = sqrt(1/2)*(|0> + |1>).: 
+    cx_cloned_state $ (sqrt (1/2)) .* (ket [0] .+  ket [1]); sqrt(1/2) * (|00> + |10>)
+3. Inspect the result for |psi> = sqrt(1/3)|0> + sqrt(2/3)|1>. :
+    cx_cloned_state $ (sqrt (1/3)) .* (ket [0] .+ (sqrt (2/3) * ket [1])); sqrt(1/3) |00> + sqrt()
 When does the "classical" cloning work to clone the quantum state?
 4. Show that the differences in wave-function reflect different measurement probabilities (show first the probabilities for measuring qubit 1, then conditional probabilities for measuring qubit 0 given result 0 on Q1.
 5. This proves the No-Cloning Theorem. Why? (Hint, you have made a linear function that matches the cloning function on the basis vectors |0> and |1>).
@@ -22,10 +24,10 @@ When does the "classical" cloning work to clone the quantum state?
   Not a physically realizable operation due to the No-cloning theorem!
  -}
 quantum_cloned_state :: StateT -> StateT 
-quantum_cloned_state ψ = ψ ⊗ ψ
+quantum_cloned_state psi = psi <.> psi
 
 cx_cloned_state :: StateT -> StateT 
-cx_cloned_state ψ = ψ ⊗ ket [0] -- Dummy placeholder. Write this function yourself! 
+cx_cloned_state psi = (evalOp (C X)) <> (psi <.> ket [0]) 
 
 
 main :: IO()
@@ -36,8 +38,27 @@ main = do
     putStr $ "-- Can we clone |0> ? --\n" ++ 
              "Quantum clone |00> = " ++ (showState q00) ++ "\n" ++
              "XOR cloned    |00> = " ++ (showState c00) ++ "\n"
+
+    let q11 = quantum_cloned_state $ ket [1]
+        c11 = cx_cloned_state      $ ket [1]
+    putStr $ "-- Can we clone |1> ? --\n" ++ 
+             "Quantum clone |11> = " ++ (showState q11) ++ "\n" ++
+             "XOR cloned    |11> = " ++ (showState c11) ++ "\n"
     
-    --- et cetera: Fill in the rest.
+    --- for plus state
+    let q_plus_0 = quantum_cloned_state $ sqrt (1/2) .* (ket [0] .+  ket [1])
+    let c_plus_0 = cx_cloned_state $ sqrt (1/2) .* (ket [0] .+  ket [1])
+
+    putStr $ "-- For the plus state cloning: --\n" ++
+             " Quantum clone: " ++ (showState q_plus_0) ++ "\n" ++
+             " XOR cloned: " ++ (showState c_plus_0) ++ "\n" 
+
+-- already here we can see that the probabilities are widely different, for measuring a pure
+-- quantum clone we would see equal prob measuring of the state 0 and 1 for the second qubit after 
+-- measuring the first qubit instead of the probability 1 of measuring 1 when the first qbit measured 1
+-- and prob 1 for measuring 0 when the first qubit measured 0
+
+
     
 
 
