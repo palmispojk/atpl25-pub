@@ -41,11 +41,11 @@ teleport rng psi = let
 
 main :: IO()
 main = do
-    --let rng0 = randoms (mkStdGen 42) :: [Double]    
-    let rng0 = [0,0,0] -- (always measure 0)
+    let rng0 = randoms (mkStdGen 42) :: [Double]    
+    --let rng0 = [0,0,0] -- (always measure 0)
     -- let rng0 = [0,1,0] -- (First meausure 0, then measure 1)
 
-    let psi = (sqrt (1/2)) .* (ket [0] .+ ket [1])   -- example: |+>
+    let psi = sqrt(1/3) .* ket [0] + sqrt(2/3) .* ket [1]  -- example: |+>
         bell = (1 / sqrt 2) .* (ket [0,0] .+ ket [1,1])
         psi_bell = psi <.> bell
     
